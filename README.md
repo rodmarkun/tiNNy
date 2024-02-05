@@ -1,0 +1,3 @@
+# TiNNy: Simple neural networks built from scratch with just Python and Numpy
+
+TiNNy is a minimalist project aimed at demonstrating the power and potential of neural networks using nothing but Python and Numpy. This project is designed for educational purposes, allowing users to understand the fundamentals of neural network architectures, forward propagation, backpropagation, and training processes in a hands-on manner.

@@ -27,6 +27,14 @@ class TiNNyNetwork:
                 predictions = utils.get_predictions(self.layers[-1].output)
                 print(f"Accuracy: {utils.get_accuracy(predictions, y_train)}")
 
+    def test(self, X_test, y_test):
+        input = X_test
+        for layer in self.layers:
+            layer.forward(input)
+            input = layer.output
+        predictions = utils.get_predictions(self.layers[-1].output)
+        print(f"Accuracy in test phase: {utils.get_accuracy(predictions, y_test)}")
+
 
 class Layer:
     def __init__(self, number_inputs, number_neurons, activation) -> None:
