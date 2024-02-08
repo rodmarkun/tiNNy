@@ -1,17 +1,27 @@
 import utils
 import numpy as np
-from activation_functions import functions, derivates
+import activation_functions as af
+import loss_functions as lf
 
 class TiNNyNetwork:
-    def __init__(self, layers=[]):
+    def __init__(self, problem_type, loss_function, layers=[], iteration_step=10):
+        if problem_type.lower() not in utils.PROBLEM_TYPES.values():
+            raise Exception(f"Problem type not specified or incorrectly spelled. Only possible values are: {utils.PROBLEM_TYPES.values()}")
+        self.problem_type = problem_type.lower()
+        self.loss_function = lf.functions[loss_function]
         self.layers = layers
+        self.output_layer = self.layers[-1]
+        self.iteration_step = iteration_step
+
+    def make_prediction(self, X):
+        input = X
+        for layer in self.layers:
+            layer.forward(input)
+            input = layer.output
     
-    def train(self, X_train, y_train, iterations, learning_rate=0.001):
+    def train(self, X_train, y_train, iterations, learning_rate=0.01):
         for i in range(iterations):
-            input = X_train
-            for layer in self.layers:
-                layer.forward(input)
-                input = layer.output
+            self.make_prediction(X_train)
             reversed_layers = self.layers[::-1]
             for idx, layer in enumerate(reversed_layers):
                 if isinstance(layer, DenseLayer):
@@ -22,26 +32,29 @@ class TiNNyNetwork:
             for layer in self.layers:
                 layer.update_parameters(learning_rate)
 
-            if i % 10 == 0:
+            if i % self.iteration_step == 0:
                 print(f"Iteration {i}")
-                predictions = utils.get_predictions(self.layers[-1].output)
-                print(f"Accuracy: {utils.get_accuracy(predictions, y_train)}")
+                prediction = self.output_layer.get_prediction(self.problem_type)
+                loss = self.loss_function(y_train, prediction)
+                print(f"Loss: {loss}")
+                if self.problem_type == utils.PROBLEM_TYPES["C"]:
+                    print(f"Accuracy: {utils.get_accuracy(prediction, y_train)}")
 
     def test(self, X_test, y_test):
-        input = X_test
-        for layer in self.layers:
-            layer.forward(input)
-            input = layer.output
-        predictions = utils.get_predictions(self.layers[-1].output)
-        print(f"Accuracy in test phase: {utils.get_accuracy(predictions, y_test)}")
+        self.make_prediction(X_test)
+        prediction = self.output_layer.get_prediction(self.problem_type)
+        loss = self.loss_function(y_test, prediction)
+        print(f"Loss: {loss}")
+        if self.problem_type == utils.PROBLEM_TYPES["C"]:
+            print(f"Accuracy: {utils.get_accuracy(prediction, y_test)}")
 
 
 class Layer:
     def __init__(self, number_inputs, number_neurons, activation) -> None:
         self.weights = np.random.rand(number_neurons, number_inputs) - 0.5
         self.biases = np.random.rand(number_neurons, 1) - 0.5
-        self.activation_function = functions[activation]
-        self.derivate_function = derivates[activation]
+        self.activation_function = af.functions[activation]
+        self.derivate_function = af.derivates[activation]
         self.d_value = None
         self.d_weights = None
         self.d_biases = None
@@ -68,6 +81,12 @@ class OutputLayer(Layer):
         self.d_value = self.output - y
         self.d_weights = 1 / number_instances * self.d_value.dot(self.input.T)
         self.d_biases = 1 / number_instances * np.sum(self.d_value)
+
+    def get_prediction(self, problem_type):
+        if problem_type == utils.PROBLEM_TYPES["C"]:
+            return np.argmax(self.output, 0)
+        else:
+            return self.output
 
 class DenseLayer(Layer):
     def __init__(self, number_inputs, number_neurons, activation) -> None:

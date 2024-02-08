@@ -1,5 +1,7 @@
 import numpy as np
 
+PROBLEM_TYPES = {"R": "regression", "C": "classification"}
+
 def one_hot(y):
     one_hot = np.zeros((y.size, y.max() + 1))
     one_hot[np.arange(y.size), y.astype(int)] = 1
