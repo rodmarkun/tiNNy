@@ -11,6 +11,7 @@ class TiNNyNetwork:
         self.loss_function = lf.functions[loss_function]
         self.layers = layers
         self.output_layer = self.layers[-1]
+        self.output_layer.problem_type = self.problem_type
         self.iteration_step = iteration_step
 
     def make_prediction(self, X):
@@ -44,9 +45,9 @@ class TiNNyNetwork:
         self.make_prediction(X_test)
         prediction = self.output_layer.get_prediction(self.problem_type)
         loss = self.loss_function(y_test, prediction)
-        print(f"Loss: {loss}")
+        print(f"Loss in test: {loss}")
         if self.problem_type == utils.PROBLEM_TYPES["C"]:
-            print(f"Accuracy: {utils.get_accuracy(prediction, y_test)}")
+            print(f"Accuracy in test: {utils.get_accuracy(prediction, y_test)}")
 
 
 class Layer:
@@ -75,9 +76,11 @@ class Layer:
 class OutputLayer(Layer):
     def __init__(self, number_inputs, number_neurons, activation) -> None:
         super().__init__(number_inputs, number_neurons, activation)
+        self.problem_type = None
     
     def backward(self, number_instances, y):
-        y = utils.one_hot(y)
+        if self.problem_type == utils.PROBLEM_TYPES["C"]:
+            y = utils.one_hot(y)
         self.d_value = self.output - y
         self.d_weights = 1 / number_instances * self.d_value.dot(self.input.T)
         self.d_biases = 1 / number_instances * np.sum(self.d_value)
