@@ -75,13 +75,14 @@ class TiNNyNetwork:
                 if self.problem_type == utils.PROBLEM_TYPES["C"]:
                     print(f"Accuracy: {utils.get_accuracy(prediction, y_train)}")
 
-    def test(self, X_test, y_test):
+    def test(self, X_test: np.array, y_test: np.array, plot: bool = False):
         """
         Tests the network on the provided test data and labels.
 
         Args:
-            X_test (_type_): Testing set of features in np.array form.
-            y_test (_type_): Testing set of labels in np.array form.
+            X_test (np.array): Testing set of features in np.array form.
+            y_test (np.array): Testing set of labels in np.array form.
+            plot (bool, optional): Generates a scatter plot of true vs predicted values. Defaults to False.
         """
 
         self.make_prediction(X_test)
@@ -90,6 +91,14 @@ class TiNNyNetwork:
         print(f"Loss in test: {loss}")
         if self.problem_type == utils.PROBLEM_TYPES["C"]:
             print(f"Accuracy in test: {utils.get_accuracy(prediction, y_test)}")
+        # Predicted values vs true values visualization
+        if plot:
+            if self.problem_type == utils.PROBLEM_TYPES["R"]:
+                utils.regression_scatter_plot(y_test, prediction)
+            elif self.problem_type == utils.PROBLEM_TYPES["C"]:
+                utils.classification_scatter_plot(y_test, prediction, np.unique(np.concatenate((y_test, prediction))))
+
+
 
 
 class Layer:

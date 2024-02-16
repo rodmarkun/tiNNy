@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 # Definition of problem types (regression and classification)
 PROBLEM_TYPES = {"R": "regression", "C": "classification"}
@@ -41,3 +44,23 @@ def get_predictions(y: np.array):
     """
     
     return np.argmax(y, 0)
+
+def regression_scatter_plot(y_test, prediction):
+    plt.scatter(y_test, prediction)
+    plt.title('Predicted vs. Real Values')
+    plt.xlabel('Real Values')
+    plt.ylabel('Predicted Values')
+    max_value = np.max([np.max(y_test), np.max(prediction)])
+    min_value = np.min([np.min(y_test), np.min(prediction)])
+    plt.plot([min_value, max_value], [min_value, max_value], color='red') 
+    plt.show()
+
+def classification_scatter_plot(y_true, y_pred, classes):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
+    plt.title('Confusion Matrix')
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.show()
+
