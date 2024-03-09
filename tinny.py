@@ -1,4 +1,5 @@
 import utils
+import graph_maker
 import numpy as np
 import activation_functions as af
 import loss_functions as lf
@@ -97,6 +98,14 @@ class TiNNyNetwork:
                 utils.regression_scatter_plot(y_test, prediction)
             elif self.problem_type == utils.PROBLEM_TYPES["C"]:
                 utils.classification_scatter_plot(y_test, prediction, np.unique(np.concatenate((y_test, prediction))))
+
+    def render(self):
+        neuron_list = []
+        for l in self.layers:
+            neuron_list.append(l.weights.shape[0])
+        num_inputs = self.layers[0].weights.shape[1]
+        dot = graph_maker.generate_nn_graph(len(self.layers), neuron_list, num_inputs)
+        return dot
 
 
 

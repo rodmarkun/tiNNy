@@ -9,25 +9,32 @@ TiNNy is a minimalist project aimed at demonstrating the power and potential of 
 
 Start using TiNNy by setting up the project on your personal computer. Follow these simple steps to get started:
 
+### Dive Into Demos
+
+TiNNy comes equipped with two sample Python notebooks. These demos are a great way to see TiNNy in action:
+
+- [demo_classification.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_classification.ipynb): TiNNy classification project using the MNIST handwritten digit dataset.
+- [demo_regression.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_regression.ipynb): TiNNy regression project using the Boston housing price dataset.
+
 ### Installation
 
-Begin by cloning the TiNNy repository to your local machine:
+First, clone the repository to your local machine using Git. Open your terminal and run the following commands:
 
 ```bash
 git clone https://github.com/rodmarkun/tiNNy
 cd tiNNy
 ```
 
-Next, ensure all necessary Python dependencies are installed:
+TiNNy requires certain Python packages to function properly. Ensure all dependencies are installed by executing the following command in the terminal:
 
-```
+```bash
 pip install -r ./requirements.txt
 ```
 
-### Dive Into Demos
+With the installation complete, you're ready to incorporate TiNNy into your Python scripts or Jupyter notebooks. Simply import the library using:
 
-TiNNy comes equipped with two sample Python notebooks. These demos are a great way to see TiNNy in action:
+```python
+import tinny
+```
 
-- `demo_classification.ipynb`: TiNNy classification project using the MNIST handwritten digit dataset.
-- `demo_regression.ipynb`: TiNNy regression project using the Boston housing price dataset.
-
+You are now equipped to explore the features and capabilities of TiNNy. Happy coding!
