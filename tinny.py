@@ -26,7 +26,11 @@ class TiNNyNetwork:
         if problem_type.lower() not in utils.PROBLEM_TYPES.values():
             raise Exception(f"Problem type not specified or incorrectly spelled. Only possible values are: {utils.PROBLEM_TYPES.values()}")
         self.problem_type = problem_type.lower()
+        if loss_function.lower() not in lf.functions.keys():
+            raise Exception(f"Loss function not specified or incorrectly spelled. Only possible values are: {lf.functions.keys()}")
         self.loss_function = lf.functions[loss_function]
+        if len(layers) < 1:
+            raise Exception(f"Your TiNNy network must contain at least one layer.")
         self.layers = layers
         self.output_layer = self.layers[-1]
         self.output_layer.problem_type = self.problem_type
@@ -99,12 +103,12 @@ class TiNNyNetwork:
             elif self.problem_type == utils.PROBLEM_TYPES["C"]:
                 utils.classification_scatter_plot(y_test, prediction, np.unique(np.concatenate((y_test, prediction))))
 
-    def render(self):
+    def render(self, minimalistic=True):
         neuron_list = []
         for l in self.layers:
             neuron_list.append(l.weights.shape[0])
         num_inputs = self.layers[0].weights.shape[1]
-        dot = graph_maker.generate_nn_graph(len(self.layers), neuron_list, num_inputs)
+        dot = graph_maker.generate_nn_graph(len(self.layers), neuron_list, num_inputs, minimalistic)
         return dot
 
 
