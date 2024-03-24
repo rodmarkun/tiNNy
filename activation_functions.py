@@ -36,7 +36,9 @@ def softmax(x: np.array):
     Returns:
         np.array: The softmax probabilities for each column, ensuring that the sum across rows for each column is 1.
     """
-    return np.exp(x) / sum(np.exp(x))
+    x = x.astype(float)
+    e_x = np.exp(x - np.max(x, axis=0))
+    return e_x / np.sum(e_x, axis=0, keepdims=True)
 
 def softmax_derivative(softmax_output: np.array):
     """

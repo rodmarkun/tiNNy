@@ -28,9 +28,9 @@ def generate_nn_graph(num_layers, neurons_per_layer, num_inputs, minimalistic=Tr
                 c.attr(color='lightblue', style='filled', fillcolor='lightblue', label=f'Hidden Layer {layer+1}')
             
             if minimalistic and neurons_per_layer[layer] > 2:
-                c.node(f'layer_{layer}_neuron_0', f'N1')
-                c.node(f'layer_{layer}_neuron_...', '...')
                 c.node(f'layer_{layer}_neuron_{neurons_per_layer[layer]-1}', f'N{neurons_per_layer[layer]}')
+                c.node(f'layer_{layer}_neuron_...', '...')
+                c.node(f'layer_{layer}_neuron_0', f'N1')
             else:
                 for neuron in range(neurons_per_layer[layer] - 1, -1, -1):
                     c.node(f'layer_{layer}_neuron_{neuron}', f'N{neuron + 1}')

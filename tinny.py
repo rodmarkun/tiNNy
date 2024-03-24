@@ -60,6 +60,11 @@ class TiNNyNetwork:
             learning_rate (float, optional): Learning rate for parameter updates. Defaults to 0.01.
         """
 
+        X_train = X_train.T
+        y_train = y_train.T
+
+        print(X_train.shape, y_train.shape)
+
         for i in range(iterations):
             self.make_prediction(X_train)
             reversed_layers = self.layers[::-1]
@@ -90,6 +95,8 @@ class TiNNyNetwork:
             plot (bool, optional): Generates a scatter plot of true vs predicted values. Defaults to False.
         """
 
+        X_test = X_test.T
+        y_test = y_test.T
         self.make_prediction(X_test)
         prediction = self.output_layer.get_prediction()
         loss = self.loss_function(y_test, prediction)
@@ -104,6 +111,25 @@ class TiNNyNetwork:
                 utils.classification_scatter_plot(y_test, prediction, np.unique(np.concatenate((y_test, prediction))))
 
     def render(self, minimalistic=True):
+        """
+        Renders a visual representation of the neural network.
+
+        This method generates a graphical depiction of the neural network's structure, including its layers and neurons. 
+        The visualization can be simplified to show only the first and last neuron in each layer if the 'minimalistic' 
+        parameter is set to True.
+
+        Parameters:
+        - minimalistic (bool, optional): Determines the level of detail in the rendering. If True, only the first and 
+        last neuron of each layer are displayed. Defaults to True.
+
+        Returns:
+        - dot (Graph): An object representing the graphical visualization of the neural network, which can be rendered 
+        with visualization tools that support the graph format used.
+
+        Note:
+        The actual rendering and visualization of the 'dot' object depend on external graph visualization tools capable 
+        of interpreting the graph format produced by 'graph_maker.generate_nn_graph'.
+        """
         neuron_list = []
         for l in self.layers:
             neuron_list.append(l.weights.shape[0])

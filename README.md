@@ -13,8 +13,8 @@ Start using TiNNy by setting up the project on your personal computer. Follow th
 
 TiNNy comes equipped with two sample Python notebooks. These demos are a great way to see TiNNy in action:
 
-- [demo_classification.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_classification.ipynb): TiNNy classification project using the MNIST handwritten digit dataset.
-- [demo_regression.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_regression.ipynb): TiNNy regression project using the Boston housing price dataset.
+- [demo_classification.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_classification.ipynb): TiNNy classification project using the MNIST handwritten digit dataset and a Heart attack prediction dataset.
+- [demo_regression.ipynb](https://github.com/rodmarkun/tiNNy/blob/master/demo_regression.ipynb): TiNNy regression project using the Boston housing price and the Diamond price prediction datasets.
 
 ### Installation
 

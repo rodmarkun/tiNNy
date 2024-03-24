@@ -31,9 +31,9 @@ def mse(y_true: np.array, prediction: np.array):
         float: The MSE loss, calculated as the average of the squared differences between true values and predictions.
     """
     
-    m = y_true.shape[1]
-    loss = np.sum((prediction - y_true) ** 2) / m
-    return loss
+    squared_diffs = np.square(y_true - prediction)
+    mse_loss = np.mean(squared_diffs)
+    return mse_loss
 
 functions = {
     "crossentropy": crossentropy,
